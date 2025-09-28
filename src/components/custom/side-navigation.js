@@ -148,6 +148,7 @@ export default function SideNavigation() {
         {
           nav_links.map((item) => (
             <Link
+              key={item.label}
               href={`/category/${item.path}`}
             >
               <Flex
