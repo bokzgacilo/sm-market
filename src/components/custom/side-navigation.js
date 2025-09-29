@@ -131,6 +131,8 @@ export default function SideNavigation() {
     <Stack
       p={4}
       height="90dvh"
+      backgroundColor="#fff"
+      w="350px"
     >
       <Heading mt={8} color="#0030FF">Browse Products</Heading>
       <Separator my={4} />

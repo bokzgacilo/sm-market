@@ -1,13 +1,18 @@
 // components/Layout.js
 import Head from "next/head";
-import { Stack, Flex, Box, InputGroup, Input, SimpleGrid } from "@chakra-ui/react";
+import { Stack, Flex, Box, InputGroup, Input, Heading, Menu, Portal, Separator, Image, NumberInput, HStack, IconButton } from "@chakra-ui/react";
 import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import { PiShoppingCartBold, PiHeartBold } from "react-icons/pi";
-import Image from "next/image";
 import { Icon, Text, Button } from "@chakra-ui/react";
 import SideNavigation from "./custom/side-navigation";
+import FooterNavigation from "./custom/footer-navigation";
+import { useState } from "react";
+import Link from "next/link";
+import { CgPushChevronRight, CgClose, CgMathMinus, CgMathPlus, CgTrash } from "react-icons/cg";
 
 export default function Layout({ children }) {
+  const [isCartOpen, setIsCartOpen] = useState(true)
+
   return (
     <>
       <Head>
@@ -16,45 +21,112 @@ export default function Layout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Stack gap={0}>
-        {/* HEADER */}
-        <Flex position="sticky" top="0" height="10dvh" alignItems="center" gap={8} p={4} pr={20} backgroundColor="#0030FF">
-          <Box w="12%">
-            <Image src="/images/smlogo.webp" width={250} height={40} alt="Logo" />
-          </Box>
-          <Flex alignItems="center" gap={2} color="#fff">
-            <Icon size="xl" color="#fff">
-              <FaMapMarkerAlt />
-            </Icon>
-            <Stack gap={0} >
-              <Text fontSize="14px" fontWeight="bold">SM Supermarket Aura Premier</Text>
-              <Text fontSize="10px">Metro Manila, Taguig City</Text>
+      <Flex direction="row">
+        <Stack gap={0} flex={1}>
+          {/* HEADER */}
+          <Flex position="sticky" top="0" height="10dvh" alignItems="center" gap={8} p={4} backgroundColor="#0030FF">
+            <Flex w="350px" justifyContent="center">
+              <Image src="/images/smlogo.webp" height="50px" alt="Logo" />
+            </Flex>
+            <Flex alignItems="center" gap={2} color="#fff">
+              <Icon size="xl" color="#fff">
+                <FaMapMarkerAlt />
+              </Icon>
+              <Stack gap={0} >
+                <Text fontSize="14px" fontWeight="bold">SM Supermarket Aura Premier</Text>
+                <Text fontSize="10px">Metro Manila, Taguig City</Text>
+              </Stack>
+            </Flex>
+            <Flex flex={1}>
+              <InputGroup endElement={<FaSearch />}>
+                <Input size="xl" backgroundColor="#fff" type="search" placeholder="Search for items here..." />
+              </InputGroup>
+            </Flex>
+            <Flex gap={4} alignItems="center">
+              <Menu.Root>
+                <Menu.Trigger asChild>
+                  <Button fontWeight="bold" fontSize="14px" size="xl" variant="plain" color="#0030FF" backgroundColor="#fff">My Account</Button>
+                </Menu.Trigger>
+                <Portal>
+                  <Menu.Positioner>
+                    <Menu.Content>
+                      <Menu.Item value="my-account"><Link href="my-account">My Account</Link></Menu.Item>
+                      <Menu.Item value="address-book"><Link href="address-book">Address Book</Link></Menu.Item>
+                      <Menu.Item value="order"><Link href="order">Order</Link></Menu.Item>
+                      <Menu.Item value="order-again"><Link href="order-again">Order Again</Link></Menu.Item>
+                      <Menu.Item value="my-wishlist">My Wishlist</Menu.Item>
+                      <Menu.Item value="newsletter-subscriptions">Newsletter Subscriptions</Menu.Item>
+                      <Menu.Item value="logout">Logout</Menu.Item>
+                    </Menu.Content>
+                  </Menu.Positioner>
+                </Portal>
+              </Menu.Root>
+              <Icon size="xl" color="#fff">
+                <PiHeartBold />
+              </Icon>
+              <Icon size="xl" color="#fff" cursor="pointer" onClick={() => setIsCartOpen((prev) => !prev)}>
+                {isCartOpen ? <CgPushChevronRight /> : <PiShoppingCartBold />}
+              </Icon>
+            </Flex>
+          </Flex>
+
+          {/* LAYOUT GRID */}
+          <Flex direction="row">
+            <SideNavigation />
+            <Stack height="90dvh" backgroundColor="#F5F5F5" flex={1} overflowY="auto">
+              {children}
+              <FooterNavigation />
             </Stack>
           </Flex>
-          <Flex flex={1}>
-            <InputGroup endElement={<FaSearch />}>
-              <Input size="xl" backgroundColor="#fff" type="search" placeholder="Search for items here..."/>            
-            </InputGroup>
-          </Flex>
-          <Flex gap={4} alignItems="center">
-            <Button fontWeight="bold" fontSize="14px" size="xl" variant="plain" color="#0030FF" backgroundColor="#fff">My Account</Button>
-            <Icon size="xl" color="#fff">
-              <PiShoppingCartBold />
-            </Icon>
-            <Icon size="xl" color="#fff">
-              <PiHeartBold />
+        </Stack>
+        <Stack
+          w="500px"
+          display={isCartOpen ? "flex" : "none"}
+        >
+          <Flex direction="row" height="9dvh" px={4} alignItems="center" justifyContent="space-between">
+            <Heading>My Cart</Heading>
+            <Icon size="xl" cursor="pointer" onClick={() => setIsCartOpen((prev) => !prev)}>
+              <CgClose />
             </Icon>
           </Flex>
-        </Flex>
-
-        {/* LAYOUT GRID */}
-        <SimpleGrid templateColumns="17% 83%">
-          <SideNavigation />
-          <Stack w="full" p={4} backgroundColor="#F5F5F5">
-            {children} {/* 👈 THIS IS WHERE CATEGORY CONTENT RENDERS */}
+          <Separator />
+          <Stack alignItems="center" gap={4}>
+            {/* <Text>There are no items in your shopping cart</Text>
+            <Button size="xl"  color="#fff" backgroundColor="#0030FF" onClick={() => setIsCartOpen((prev) => !prev)}>Continue Shopping</Button> */}
+            <Flex p={4} gap={4} borderBottom="1px solid #F5F5F5">
+              <Image height="80px" src="/images/dummy/sample-coffee.webp" />
+              <Stack gap={0}>
+                <Text fontSize="14px" fontWeight="semibold">San Mig Coffee 3-in-1 Sugar Free Original | 7g 20sachets</Text>
+                <Flex mt="auto">
+                  <NumberInput.Root defaultValue="3">
+                    <HStack>
+                      <NumberInput.DecrementTrigger asChild>
+                        <IconButton rounded="full" variant="outline" size="sm">
+                          <CgMathMinus />
+                        </IconButton>
+                      </NumberInput.DecrementTrigger>
+                      <NumberInput.ValueText textAlign="center" fontSize="lg" minW="3ch" />
+                      <NumberInput.IncrementTrigger asChild>
+                        <IconButton rounded="full" variant="outline" size="sm">
+                          <CgMathPlus />
+                        </IconButton>
+                      </NumberInput.IncrementTrigger>
+                    </HStack>
+                  </NumberInput.Root>
+                </Flex>
+              </Stack>
+              <Stack alignItems="flex-end">
+                <Heading color="#0030FF">₱130.00</Heading>
+                <Flex mt="auto">
+                  <IconButton rounded="full" colorPalette="red" size="sm">
+                    <CgTrash />
+                  </IconButton>
+                </Flex>
+              </Stack>
+            </Flex>
           </Stack>
-        </SimpleGrid>
-      </Stack>
+        </Stack>
+      </Flex>
     </>
   );
 }
