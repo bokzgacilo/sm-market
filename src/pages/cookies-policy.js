@@ -60,7 +60,7 @@ export default function CookiesPolicy() {
                   </List.Item>
                   <List.Item>
                     if you have already replied to a survey pop-up that asks you if the
-                    content was helpful or not (so you won't be asked again)
+                    content was helpful or not (so you won&apos;t be asked again)
                   </List.Item>
                   <List.Item>
                     if you have agreed (or not) to our use of cookies on this site
