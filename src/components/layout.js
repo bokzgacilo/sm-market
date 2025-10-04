@@ -11,7 +11,7 @@ import Link from "next/link";
 import { CgPushChevronRight, CgClose, CgMathMinus, CgMathPlus, CgTrash } from "react-icons/cg";
 
 export default function Layout({ children }) {
-  const [isCartOpen, setIsCartOpen] = useState(true)
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   return (
     <>
