@@ -1,17 +1,17 @@
 // components/Layout.js
 import Head from "next/head";
-import { Stack, Flex, Box, InputGroup, Input, Heading, Menu, Portal, Separator, Image, NumberInput, HStack, IconButton } from "@chakra-ui/react";
+import { Stack, Flex, Box, InputGroup, Input, Drawer, Heading, CloseButton, Portal, Separator, Image, NumberInput, HStack, IconButton } from "@chakra-ui/react";
 import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import { PiShoppingCartBold, PiHeartBold } from "react-icons/pi";
 import { Icon, Text, Button } from "@chakra-ui/react";
 import SideNavigation from "./custom/side-navigation";
 import FooterNavigation from "./custom/footer-navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { CgPushChevronRight, CgClose, CgMathMinus, CgMathPlus, CgTrash } from "react-icons/cg";
 
 export default function Layout({ children }) {
-  const [isCartOpen, setIsCartOpen] = useState(false)
+  const [open, setOpen] = useState(false)
 
   return (
     <>
@@ -43,7 +43,10 @@ export default function Layout({ children }) {
               </InputGroup>
             </Flex>
             <Flex gap={4} alignItems="center">
-              <Menu.Root>
+              <Link href="/login" passHref>
+                <Button size="xl" color="#0030FF" backgroundColor="#fff" fontWeight="semibold">Hello, sign in?</Button>
+              </Link>
+              {/* <Menu.Root>
                 <Menu.Trigger asChild>
                   <Button fontWeight="bold" fontSize="14px" size="xl" variant="plain" color="#0030FF" backgroundColor="#fff">My Account</Button>
                 </Menu.Trigger>
@@ -60,13 +63,38 @@ export default function Layout({ children }) {
                     </Menu.Content>
                   </Menu.Positioner>
                 </Portal>
-              </Menu.Root>
+              </Menu.Root> */}
               <Icon size="xl" color="#fff">
                 <PiHeartBold />
               </Icon>
-              <Icon size="xl" color="#fff" cursor="pointer" onClick={() => setIsCartOpen((prev) => !prev)}>
-                {isCartOpen ? <CgPushChevronRight /> : <PiShoppingCartBold />}
-              </Icon>
+              <Drawer.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
+                <Drawer.Trigger asChild>
+                  <Icon size="xl" color="#fff" cursor="pointer" onClick={() => setOpen(true)}>
+                    <PiShoppingCartBold />
+                  </Icon>
+                </Drawer.Trigger>
+                <Portal>
+                  <Drawer.Backdrop />
+                  <Drawer.Positioner>
+                    <Drawer.Content>
+                      <Drawer.Header>
+                        <Drawer.Title>My Cart</Drawer.Title>
+                      </Drawer.Header>
+                      <Drawer.Body>
+                        <p>
+                          No item to show.
+                        </p>
+                      </Drawer.Body>
+                      <Drawer.Footer>
+                        <Button w="full" bgColor="smblue">Checkout</Button>
+                      </Drawer.Footer>
+                      <Drawer.CloseTrigger asChild>
+                        <CloseButton size="sm" />
+                      </Drawer.CloseTrigger>
+                    </Drawer.Content>
+                  </Drawer.Positioner>
+                </Portal>
+              </Drawer.Root>
             </Flex>
           </Flex>
 
@@ -78,53 +106,6 @@ export default function Layout({ children }) {
               <FooterNavigation />
             </Stack>
           </Flex>
-        </Stack>
-        <Stack
-          w="500px"
-          display={isCartOpen ? "flex" : "none"}
-        >
-          <Flex direction="row" height="9dvh" px={4} alignItems="center" justifyContent="space-between">
-            <Heading>My Cart</Heading>
-            <Icon size="xl" cursor="pointer" onClick={() => setIsCartOpen((prev) => !prev)}>
-              <CgClose />
-            </Icon>
-          </Flex>
-          <Separator />
-          <Stack alignItems="center" gap={4}>
-            {/* <Text>There are no items in your shopping cart</Text>
-            <Button size="xl"  color="#fff" backgroundColor="#0030FF" onClick={() => setIsCartOpen((prev) => !prev)}>Continue Shopping</Button> */}
-            <Flex p={4} gap={4} borderBottom="1px solid #F5F5F5">
-              <Image alt={data.title} height="80px" src="/images/dummy/sample-coffee.webp" />
-              <Stack gap={0}>
-                <Text fontSize="14px" fontWeight="semibold">San Mig Coffee 3-in-1 Sugar Free Original | 7g 20sachets</Text>
-                <Flex mt="auto">
-                  <NumberInput.Root defaultValue="3">
-                    <HStack>
-                      <NumberInput.DecrementTrigger asChild>
-                        <IconButton rounded="full" variant="outline" size="sm">
-                          <CgMathMinus />
-                        </IconButton>
-                      </NumberInput.DecrementTrigger>
-                      <NumberInput.ValueText textAlign="center" fontSize="lg" minW="3ch" />
-                      <NumberInput.IncrementTrigger asChild>
-                        <IconButton rounded="full" variant="outline" size="sm">
-                          <CgMathPlus />
-                        </IconButton>
-                      </NumberInput.IncrementTrigger>
-                    </HStack>
-                  </NumberInput.Root>
-                </Flex>
-              </Stack>
-              <Stack alignItems="flex-end">
-                <Heading color="#0030FF">₱130.00</Heading>
-                <Flex mt="auto">
-                  <IconButton rounded="full" colorPalette="red" size="sm">
-                    <CgTrash />
-                  </IconButton>
-                </Flex>
-              </Stack>
-            </Flex>
-          </Stack>
         </Stack>
       </Flex>
     </>

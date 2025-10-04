@@ -4,15 +4,16 @@ import { Provider } from "@/components/ui/provider";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/styles/globals.css";
+import { Theme } from "@chakra-ui/react"
 
 export default function App({ Component, pageProps }) {
-  return(
+  return (
     <Provider>
-      <LightMode>
+      <Theme appearance="light">
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </LightMode>
+      </Theme>
     </Provider>
   )
 }
