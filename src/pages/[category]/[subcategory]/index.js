@@ -20,7 +20,7 @@ export default function CategoryPage() {
       setAllProducts(data)
     }
     fetchProducts();
-  }, [subcategory])
+  }, [subcategory, category])
 
   const pageTitle = subcategory
     ? `${formatTitle(subcategory)} | SM Supermarket`

@@ -92,8 +92,8 @@ export default function ProductPage() {
                   <Box w="100%" maxW="500px" className="slider-container">
                     <Slider {...settings}>
                       {product.images?.map((image, key) => (
-                        <Center>
-                          <Image w="100%" height="500px" objectFit="contain" src={image} />
+                        <Center key={key}>
+                          <Image w="100%" alt={`Carousel Image ${key + 1}`} height="500px" objectFit="contain" src={image} />
                         </Center>
                       ))}
                       {/* <div><h1>2</h1></div>

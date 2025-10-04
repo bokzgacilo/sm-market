@@ -94,7 +94,7 @@ export default function Layout({ children }) {
             {/* <Text>There are no items in your shopping cart</Text>
             <Button size="xl"  color="#fff" backgroundColor="#0030FF" onClick={() => setIsCartOpen((prev) => !prev)}>Continue Shopping</Button> */}
             <Flex p={4} gap={4} borderBottom="1px solid #F5F5F5">
-              <Image height="80px" src="/images/dummy/sample-coffee.webp" />
+              <Image alt={data.title} height="80px" src="/images/dummy/sample-coffee.webp" />
               <Stack gap={0}>
                 <Text fontSize="14px" fontWeight="semibold">San Mig Coffee 3-in-1 Sugar Free Original | 7g 20sachets</Text>
                 <Flex mt="auto">

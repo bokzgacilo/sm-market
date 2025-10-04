@@ -60,7 +60,7 @@ export default function SideNavigation() {
                 px={4}
                 cursor="pointer"
               >
-                <Image mr={6} width="40px" height="40px" src={item.icon} />
+                <Image mr={6} alt={item.label} width="40px" height="40px" src={item.icon} />
                 <Text maxW="130px" textAlign="left" fontSize="14px" fontWeight="semibold" mr="auto">{item.label}</Text>
                 <Icon size="md" color="#0030FF">
                   <GoChevronRight />

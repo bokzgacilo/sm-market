@@ -11,7 +11,7 @@ export default function ProductCard({ data }) {
     >
       <Link href={`/${data.category}/${data.subcategory}/${data.slug}`} passHref>
         <Stack>
-          <Image mb={6} src={data.images[0]} width="100%" height="300px" objectFit="contain"/>
+          <Image mb={6} alt={data.title} src={data.images[0]} width="100%" height="300px" objectFit="contain"/>
           <Text fontSize="15px" color="#0030FF" fontWeight="semibold">{data.title}</Text>
         </Stack>
       </Link>

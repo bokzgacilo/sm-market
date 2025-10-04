@@ -6,7 +6,7 @@ import CustomBreadcrumb from "@/components/custom/custom-breadcrumb";
 import formatTitle from "@/helper/slug";
 import Link from "next/link";
 import { FiFilter } from "react-icons/fi";
-import { useEffect, useState } from "react";
+import { useEffect,useCallback, useState } from "react";
 import { getAllProducts, supabase } from "@/helper/supabase";
 import dynamic from 'next/dynamic';
 import ProductCard from "@/components/custom/product-card";
@@ -22,18 +22,18 @@ export default function CategoryPage() {
   const [allProducts, setAllProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
-  const getSubcategories = async () => {
+  const getSubcategories = useCallback(async () => {
     let { data: subcategories, error } = await supabase
       .from('categories')
       .select('subcategories')
       .eq('slug', category)
       .limit(1)
-
+  
     if (error) {
       console.error(error);
       return;
     }
-
+  
     if (
       Array.isArray(subcategories) &&
       subcategories.length > 0 &&
@@ -49,13 +49,11 @@ export default function CategoryPage() {
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
             .join(" "),
         }));
-      setSubcategoriesArray(formatted)
+      setSubcategoriesArray(formatted);
     }
-  }
+  }, [category]);
 
   useEffect(() => {
-    getSubcategories()
-
     const fetchProducts = async () => {
       const data = await getAllProducts(category, "")
       setAllProducts(data)
@@ -64,8 +62,9 @@ export default function CategoryPage() {
       }, 1500);
     }
 
+    getSubcategories()
     fetchProducts()
-  }, [category])
+  }, [category, getSubcategories])
 
   const pageTitle = category
     ? `${formatTitle(category)} | SM Supermarket`
